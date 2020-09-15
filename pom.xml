@@ -7,10 +7,37 @@
   <groupId>org.wigo</groupId>
   <artifactId>sentence-splitter-answer-checker</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>sentence-splitter-answer-checker</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <description>Check your sentence splitter accuracy</description>
+  <url>https://github.com/wjrmffldrhrl/sentence-splitter-answer-checker</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://opensource.org/licenses/Apache-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>wjrmffldrhrl</name>
+      <email>wjrmffldrhrl@gmail.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <url>https://github.com/wjrmffldrhrl/sentence-splitter-answer-checker</url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>sentence-splitter-answer-checker</id>
+      <url>https://api.bintray.com/maven/wjrmffldrhrl/utils/sentence-splitter-answer-checker/;publish=1</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
