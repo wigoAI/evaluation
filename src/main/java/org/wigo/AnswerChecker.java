@@ -38,23 +38,21 @@ public class AnswerChecker {
     // 정답 체크 메서드
     public float checkAnswer(List<String> submittedSheet) {
 
-        int sheetIndex = 0;
+        int submitIndex = 0;
         int answerIndex = 0;
         float unCorrectCnt = 0;
         float correctCnt = 0;
 
-        // 제출지 임시 저장소
-        // 구분점을 지났을 때 사용
+        // 답안지와 제출지 객체
         Sheet sheet = new Sheet();
 
         while(answerIndex < this.getSizeOfAnswerList()) {
 
-            String answerSheet = this.answerList.get(answerIndex).replace(" ", "");
-            String submitSheet = submittedSheet.get(sheetIndex).replace(" ", "");
-
 
             // sheet 초기화
-            System.out.println(sheet.initSheet(answerSheet, submitSheet));
+            System.out.println(
+                    sheet.initSheet(this.answerList.get(answerIndex), submittedSheet.get(submitIndex))
+            );
 
 
             // 정답
@@ -73,7 +71,6 @@ public class AnswerChecker {
             // 구분점을 지나쳤을 떄
             } else if(sheet.isSubmitContainsAnswer()){
 //                System.out.println("pass splitter");
-
 
                 unCorrectCnt++;
 
@@ -105,12 +102,12 @@ public class AnswerChecker {
 
             if(sheet.isAnswerContainsSubmit()){
                 sheet.setTmpSubmit("");
-                // 다음 문장 구분으로 이동
-                sheetIndex++;
+
+                submitIndex++;
             }
             if(sheet.isSubmitContainsAnswer()) {
                 sheet.setTmpAnswer("");
-                // 다음 정답지로 이동
+
                 answerIndex++;
             }
 

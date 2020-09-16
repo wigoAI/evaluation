@@ -51,8 +51,8 @@ public class AnswerCheckerTest {
 
     @Test
     public void checkAnswerTest() {
-        AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/answer1.txt");
-        FileReader fileReader = new FileReader("/data/submit1_1.txt");
+        AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/answer3.txt");
+        FileReader fileReader = new FileReader("/data/submit1_3.txt");
         List<String> submitList = fileReader.getSplitFileByLine();
 
         System.out.println(answerChecker.checkAnswer(submitList));

@@ -18,7 +18,7 @@ public class Sheet {
         String result = "Answer : ";
 
         if(this.tmpAnswer.length() == 0) {
-            this.answer = answer;
+            this.answer = answer.replace(" ", "");
             result += this.answer;
         } else {
             this.answer = this.tmpAnswer;
@@ -27,7 +27,7 @@ public class Sheet {
         result += "\nSubmit : ";
 
         if(this.tmpSubmit.length() == 0) {
-            this.submit = submit;
+            this.submit = submit.replace(" ", "");;
             result += this.submit;
 
         } else {
