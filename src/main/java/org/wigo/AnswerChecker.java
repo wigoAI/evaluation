@@ -48,12 +48,10 @@ public class AnswerChecker {
 
         while(answerIndex < this.getSizeOfAnswerList()) {
 
-
             // sheet 초기화
             System.out.println(
                     sheet.initSheet(this.answerList.get(answerIndex), submittedSheet.get(submitIndex))
             );
-
 
             // 정답
             if( sheet.isCorrect() ) {
@@ -78,7 +76,7 @@ public class AnswerChecker {
                 sheet.setTmpSubmit();
 
             // 잘못된 문장 구분점을 적용했을 때
-            } else if(sheet.isAnswerContainsSubmit()){
+            } else if(sheet.isAnswerContainsSubmit()) {
 //                System.out.println("unCorrect splitter");
                 // 답안 문장은 잘문 구분된 문장을 포함하고 있을것이다.
                 // 혹시 모르니 체크
