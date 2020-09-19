@@ -22,12 +22,13 @@ public class FileReader {
         }
     }
 
-    public String getFile() {
-        return this.file;
-    }
 
+    /**
+     * TODO 1. 모든 특수문자에 대한 처리
+     */
     public List<String> getSplitFile(String splitter) {
         List<String> splitList = new ArrayList<>();
+
         if(splitter == "|") splitter = "\\|";
 
         for(String str : this.getFile().split(splitter)) {
@@ -37,9 +38,6 @@ public class FileReader {
         return splitList;
     }
 
-    public List<String> getSplitFileByLine() {
-
-        return this.getSplitFile("\\n");
-    }
-
+    public List<String> getSplitFileByLine() { return this.getSplitFile("\\n"); }
+    public String getFile() { return this.file; }
 }

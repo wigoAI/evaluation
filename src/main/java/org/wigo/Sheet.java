@@ -1,11 +1,14 @@
 package org.wigo;
 
+/**
+ * 정답지와 문장 분리기의 결과를 처리하고 비교하기 위한 클래스
+ *
+ */
 public class Sheet {
     private String answer;
     private String submit;
     private String tmpAnswer;
     private String tmpSubmit;
-
 
     public Sheet() {
         this.answer = "";
