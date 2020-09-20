@@ -2,6 +2,7 @@ package org.wigo;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.wigo.fileManager.FileReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,5 +47,14 @@ public class AnswerCheckerTest {
         for(String str : exampleFiles) {
             System.out.println(str);
         }
+    }
+
+    @Test
+    public void checkAnswerTest() {
+        AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/answer3.txt");
+        FileReader fileReader = new FileReader("/data/submit1_3.txt");
+        List<String> submitList = fileReader.getSplitFileByLine();
+
+        System.out.println(answerChecker.checkAnswer(submitList));
     }
 }
