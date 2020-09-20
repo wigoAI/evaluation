@@ -12,6 +12,7 @@ import java.util.List;
  * 또는 리스트 형태의 정답 데이터로 초기화
  * 생성자로 접근하지 않고 인스턴스를 반환하는 메서드로 접근
  *
+ * TODO
  * */
 public class AnswerChecker {
     private List<String> answerList = new ArrayList<>();
@@ -74,7 +75,6 @@ public class AnswerChecker {
                 sheet.setTmpSubmit();
 
             } else if(sheet.isAnswerContainsSubmit()) {
-//                System.out.println("unCorrect splitter");
                 // 답안 문장은 잘문 구분된 문장을 포함하고 있을것이다.
                 // 혹시 모르니 체크
 

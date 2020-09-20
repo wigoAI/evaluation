@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class FileReader {
 
@@ -29,13 +30,18 @@ public class FileReader {
     public List<String> getSplitFile(String splitter) {
         List<String> splitList = new ArrayList<>();
 
-        if(splitter == "|") splitter = "\\|";
-
         for(String str : this.getFile().split(splitter)) {
             splitList.add(str.trim());
         }
 
         return splitList;
+    }
+
+    private boolean isContainSpecialChar(String splitter) {
+        String regular = "[\\!-\\/\\:-\\@\\[-\\`\\{-\\~]";
+        Pattern pattern = Pattern.compile(regular);
+
+        return pattern.matcher(splitter).matches();
     }
 
     public List<String> getSplitFileByLine() { return this.getSplitFile("\\n"); }
