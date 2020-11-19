@@ -1,5 +1,5 @@
-# sentence-splitter-answer-checker
-문장 분리기 정답 체크기
+splitter-answer-checker
+분리기 정답 체크기
 
 # 동작 방식
 
