@@ -12,17 +12,15 @@ import java.util.List;
  * 또는 리스트 형태의 정답 데이터로 초기화
  * 생성자로 접근하지 않고 인스턴스를 반환하는 메서드로 접근
  *
- * TODO
  * */
 public class AnswerChecker {
-    private List<String> answerList = new ArrayList<>();
-    private int sizeOfAnswerList;
+    private final List<String> answerList;
 
 
     private AnswerChecker(List<String> answerList) {
         this.answerList = answerList;
-        this.sizeOfAnswerList = answerList.size();
     }
+
     private AnswerChecker(FileReader fileReader) {
         this(fileReader.getSplitFileByLine());
     }
@@ -47,12 +45,10 @@ public class AnswerChecker {
         // 답안지와 제출지 객체
         Sheet sheet = new Sheet();
 
-        while(answerIndex < this.getSizeOfAnswerList()) {
+        while(answerIndex < answerList.size()) {
 
             // sheet 초기화
-            System.out.println(
-                    sheet.initSheet(this.answerList.get(answerIndex), submittedSheet.get(submitIndex))
-            );
+            System.out.println(sheet.initSheet(answerList.get(answerIndex), submittedSheet.get(submitIndex)));
 
             // 정답
             if( sheet.isCorrect() ) {
@@ -108,12 +104,12 @@ public class AnswerChecker {
 
         }
 
-        System.out.println("Answer List Size : " + this.sizeOfAnswerList
+        System.out.println("Answer List Size : " + answerList.size()
                 + "\nWrong split count : " + unCorrectCnt
                 + "\nCorrect split count : " + correctCnt);
 
         // 정확도 0.0 ~ 1.0
-        return correctCnt / this.sizeOfAnswerList;
+        return correctCnt / answerList.size();
     }
 
     public static List<String> getExampleFiles() {
@@ -128,6 +124,5 @@ public class AnswerChecker {
     }
 
     public List<String> getAnswerList() { return this.answerList; }
-    public int getSizeOfAnswerList() { return this.sizeOfAnswerList; }
 
 }

@@ -57,4 +57,5 @@ public class AnswerCheckerTest {
 
         System.out.println(answerChecker.checkAnswer(submitList));
     }
+
 }

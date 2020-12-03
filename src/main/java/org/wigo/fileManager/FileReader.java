@@ -23,10 +23,6 @@ public class FileReader {
         }
     }
 
-
-    /**
-     * TODO 1. 모든 특수문자에 대한 처리
-     */
     public List<String> getSplitFile(String splitter) {
         List<String> splitList = new ArrayList<>();
 

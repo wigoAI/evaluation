@@ -5,39 +5,32 @@ package org.wigo;
  *
  */
 public class Sheet {
-    private String answer;
-    private String submit;
-    private String tmpAnswer;
-    private String tmpSubmit;
-
-    public Sheet() {
-        this.answer = "";
-        this.submit = "";
-        this.tmpAnswer = "";
-        this.tmpSubmit = "";
-    }
+    private String answer = "";
+    private String submit = "";
+    private String tmpAnswer = "";
+    private String tmpSubmit = "";
 
     public String initSheet(String answer, String submit) {
-        String result = "Answer : ";
+        StringBuilder result = new StringBuilder("Answer : ");
 
         if(this.tmpAnswer.length() == 0) {
             this.answer = answer.replace(" ", "");
-            result += this.answer;
+            result.append(this.answer);
         } else {
             this.answer = this.tmpAnswer;
         }
 
-        result += "\nSubmit : ";
+        result.append("\nSubmit : ");
 
         if(this.tmpSubmit.length() == 0) {
             this.submit = submit.replace(" ", "");;
-            result += this.submit;
+            result.append(this.submit);
 
         } else {
             this.submit = this.tmpSubmit;
         }
 
-        return result + "\n";
+        return result.append("\n").toString();
     }
 
 
