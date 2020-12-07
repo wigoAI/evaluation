@@ -1,128 +1,137 @@
 package org.wigo;
 
-
-import org.wigo.fileManager.FileReader;
-
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-/**
- * 정답체크클래스
- * 줄바꿈으로 나눠진 정답 파일로 초기화한다.
- * 또는 리스트 형태의 정답 데이터로 초기화
- * 생성자로 접근하지 않고 인스턴스를 반환하는 메서드로 접근
- *
- * */
 public class AnswerChecker {
-    private final List<String> answerList;
+    private final String[] answerSheet;
+    private final Integer[] answerSplitPoints;
+    private final Integer[] answerNonSplitPoints;
+    private final String answerStr;
+
+    private List<String> splitterSheet;
+
+    public AnswerChecker(String fileName) {
+        this.answerSheet = getSheetByFile(fileName)
+                .stream().map(sheet -> sheet.replace(" ", ""))
+                .toArray(String[]::new);
+
+        List<Integer> answerSplitPoints =  getSplitPoints(Arrays.asList(answerSheet.clone()));
+        Integer[] tmpAnswerSplitPoints = new Integer[answerSplitPoints.size()];
+        for (int i = 0; i < tmpAnswerSplitPoints.length; i++) {
+            tmpAnswerSplitPoints[i] = answerSplitPoints.get(i);
+        }
+        this.answerSplitPoints = tmpAnswerSplitPoints;
 
 
-    private AnswerChecker(List<String> answerList) {
-        this.answerList = answerList;
+        StringBuilder answerSheetString = new StringBuilder();
+        Arrays.stream(this.answerSheet).map(sheet -> sheet = sheet.replace(" ", ""))
+                .forEach(answerSheetString::append);
+        this.answerStr = answerSheetString.toString();
+
+        this.answerNonSplitPoints = IntStream.range(1, answerStr.length())
+                .filter(point -> !answerSplitPoints.contains(point)).boxed().toArray(Integer[]::new);
+
+
     }
 
-    private AnswerChecker(FileReader fileReader) {
-        this(fileReader.getSplitFileByLine());
-    }
-    public static AnswerChecker setAnswerCheckerByAnswerFile(String answerFilePath) {
-        FileReader fileReader = new FileReader(answerFilePath);
-        return new AnswerChecker(fileReader);
+    public void initSplitterSheet(String[] splitterSheet) {
+        initSplitterSheet(Arrays.asList(splitterSheet.clone()));
     }
 
-    public static AnswerChecker setAnswerCheckerByAnswerList(List<String> answerList) {
-        return new AnswerChecker(answerList);
+    public void initSplitterSheet(String fileName) {
+        List<String> splitterSheet = getSheetByFile(fileName);
+        initSplitterSheet(splitterSheet);
     }
 
-
-    // 정답 체크 메서드
-    public float checkAnswer(List<String> submittedSheet) {
-
-        int submitIndex = 0;
-        int answerIndex = 0;
-        float unCorrectCnt = 0;
-        float correctCnt = 0;
-
-        // 답안지와 제출지 객체
-        Sheet sheet = new Sheet();
-
-        while(answerIndex < answerList.size()) {
-
-            // sheet 초기화
-            System.out.println(sheet.initSheet(answerList.get(answerIndex), submittedSheet.get(submitIndex)));
-
-            // 정답
-            if( sheet.isCorrect() ) {
-                /**
-                 * 온전한 문장으로 나눴을 때 정답으로 인정한다.
-                 * 임시 정답지를 사용하지 않았다면 온전한 정답을 맞춘 것이다.
-                 * 임시 정답지는 올바르지 않은 문장 구분자를 사용하여 답보다 짧게 나누었을 때
-                 * 사용하기 때문이다.
-                 */
-                if(sheet.isTmpAnswerEmpty()) {
-                    correctCnt++;
-                }
-
-            // 구분점을 지나쳤을 떄
-            } else if(sheet.isSubmitContainsAnswer()){
-
-                unCorrectCnt++;
-
-                // 구분점으로 임의로 자르기
-                sheet.setTmpSubmit();
-
-            } else if(sheet.isAnswerContainsSubmit()) {
-                // 답안 문장은 잘문 구분된 문장을 포함하고 있을것이다.
-                // 혹시 모르니 체크
-
-                unCorrectCnt++;
-
-                // 구분점을 임의로 자른다.
-                sheet.setTmpAnswer();
-
-            // 길이만 같고 답이 아닐 때, 혹은 길이가 긴 쪽이 짧은쪽을 포함 안할 때
-            } else {
-                /**
-                 * 예외사항 생각할 것
-                 *
-                 * */
-                System.out.println("something is wrong");
-                break;
-
-            }
-
-            if(sheet.isAnswerContainsSubmit()){
-                sheet.setTmpSubmit("");
-
-                submitIndex++;
-            }
-            if(sheet.isSubmitContainsAnswer()) {
-                sheet.setTmpAnswer("");
-
-                answerIndex++;
-            }
-
-
+    public void initSplitterSheet(List<String> splitterSheet) {
+        if (!isValidSplitterSheet(splitterSheet)) {
+            throw new RuntimeException("Invalid splitter sheet");
         }
 
-        System.out.println("Answer List Size : " + answerList.size()
-                + "\nWrong split count : " + unCorrectCnt
-                + "\nCorrect split count : " + correctCnt);
-
-        // 정확도 0.0 ~ 1.0
-        return correctCnt / answerList.size();
+        this.splitterSheet = splitterSheet;
     }
 
-    public static List<String> getExampleFiles() {
-        List<String> exampleFiles = new ArrayList<>();
+    private boolean isValidSplitterSheet(List<String> sheets) {
+        StringBuilder sheetString = new StringBuilder();
 
-        for(int i = 1 ; i <= 3 ; i++) {
-            FileReader fileReader = new FileReader("/data/data" + i + ".txt");
-            exampleFiles.add(fileReader.getFile());
+        sheets.stream().map(sheet -> sheet = sheet.replace(" ", ""))
+                .forEach(sheetString::append);
+
+        return answerStr.equals(sheetString.toString());
+    }
+
+    public CheckResult answerCheck() {
+        List<Integer> answerSplitPoints = new ArrayList(Arrays.asList(this.answerSplitPoints));
+        List<Integer> answerNonSplitPoints = new ArrayList(Arrays.asList(this.answerNonSplitPoints));
+        List<Integer> splitterSplitPoints = getSplitPoints(splitterSheet);
+        List<Integer> splitterNonSplitPoints = IntStream.range(1, answerStr.length())
+                .filter(point -> !splitterSplitPoints.contains(point)).boxed().collect(Collectors.toList());
+
+
+
+        List<Integer> truePositivePoints = answerSplitPoints.stream()
+                .filter(splitterSplitPoints::contains).collect(Collectors.toList());
+        List<Integer> trueNegativePoints = answerNonSplitPoints.stream()
+                .filter(splitterNonSplitPoints::contains).collect(Collectors.toList());
+
+        List<Integer> falseNegativePoints = answerSplitPoints.stream()
+                .filter(splitterNonSplitPoints::contains).collect(Collectors.toList());
+        List<Integer> falsePositivePoints = answerNonSplitPoints.stream()
+                .filter(splitterSplitPoints::contains).collect(Collectors.toList());
+
+
+
+        int truePositive = truePositivePoints.size();
+        int trueNegative = trueNegativePoints.size();
+        int falseNegative = falseNegativePoints.size();
+        int falsePositive = falsePositivePoints.size();
+
+
+        return new CheckResult(answerSplitPoints.size(), answerNonSplitPoints.size(),
+                truePositive, trueNegative, falseNegative, falsePositive);
+    }
+
+
+    private List<Integer> getSplitPoints(List<String> sheets) {
+
+        List<Integer> sheetSplitPoints = new LinkedList<>();
+
+        int previousSplitPoint = 0;
+        for (int i = 0; i < sheets.size() - 1 ; i++) {
+            previousSplitPoint += sheets.get(i).length();
+            sheetSplitPoints.add(previousSplitPoint);
         }
 
-        return exampleFiles;
+
+        return sheetSplitPoints;
     }
 
-    public List<String> getAnswerList() { return this.answerList; }
 
+    private List<String> getSheetByFile(String fileName) {
+        List<String> sheet = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream("./data/" + fileName + ".txt"), StandardCharsets.UTF_8))) {
+
+            while (true) {
+                String line = br.readLine();
+                if (line == null) { break; }
+                sheet.add(line);
+            }
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return sheet;
+    }
+
+    public String[] getAnswerSheet() { return answerSheet; }
+    public List<String> getSplitterSheet() { return splitterSheet; }
 }
