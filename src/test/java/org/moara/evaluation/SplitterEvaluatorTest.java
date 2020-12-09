@@ -1,4 +1,4 @@
-package org.wigo;
+package org.moara.evaluation;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class SplitterAnswerCheckerTest {
+public class SplitterEvaluatorTest {
     String filePath = "./data/answer.txt";
 
     String[] answerSheet = {"apple.", "orange.", "banana.", "melon."};
@@ -30,7 +30,7 @@ public class SplitterAnswerCheckerTest {
             e.printStackTrace();
         }
 
-        SplitterAnswerChecker splitterAnswerChecker = new SplitterAnswerChecker("answer");
+        SplitterEvaluator splitterAnswerChecker = new SplitterEvaluator("answer");
 
         int index = 0;
         for (String answer : answerSheet) {
@@ -41,7 +41,7 @@ public class SplitterAnswerCheckerTest {
 
     @Test
     public void testInputSplitterSheet() {
-        SplitterAnswerChecker splitterAnswerChecker = new SplitterAnswerChecker("answer");
+        SplitterEvaluator splitterAnswerChecker = new SplitterEvaluator("answer");
         splitterAnswerChecker.initSplitterSheet(splitterSheetWrongCount3);
 
         int index = 0;
@@ -53,41 +53,41 @@ public class SplitterAnswerCheckerTest {
 
     @Test
     public void testAnswerCheck() {
-        SplitterAnswerChecker splitterAnswerChecker = new SplitterAnswerChecker("answer");
+        SplitterEvaluator splitterAnswerChecker = new SplitterEvaluator("answer");
         splitterAnswerChecker.initSplitterSheet(splitterSheetWrongCount3);
 
-        CheckResult checkResult = splitterAnswerChecker.answerCheck();
+        Evaluation evaluation = splitterAnswerChecker.answerCheck();
 
-        Assert.assertEquals(2, checkResult.getTruePositive(), 0.001);
-        Assert.assertEquals(20, checkResult.getTrueNegative(), 0.001);
-        Assert.assertEquals(2, checkResult.getFalsePositive(), 0.001);
-        Assert.assertEquals(1, checkResult.getFalseNegative(), 0.001);
+        Assert.assertEquals(2, evaluation.getTruePositive(), 0.001);
+        Assert.assertEquals(20, evaluation.getTrueNegative(), 0.001);
+        Assert.assertEquals(2, evaluation.getFalsePositive(), 0.001);
+        Assert.assertEquals(1, evaluation.getFalseNegative(), 0.001);
 
         splitterAnswerChecker.initSplitterSheet(splitterSheetWrongCount4);
 
-        checkResult = splitterAnswerChecker.answerCheck();
+        evaluation = splitterAnswerChecker.answerCheck();
 
-        Assert.assertEquals(1, checkResult.getTruePositive(), 0.001);
-        Assert.assertEquals(20, checkResult.getTrueNegative(), 0.001);
-        Assert.assertEquals(2, checkResult.getFalsePositive(), 0.001);
-        Assert.assertEquals(2, checkResult.getFalseNegative(), 0.001);
+        Assert.assertEquals(1, evaluation.getTruePositive(), 0.001);
+        Assert.assertEquals(20, evaluation.getTrueNegative(), 0.001);
+        Assert.assertEquals(2, evaluation.getFalsePositive(), 0.001);
+        Assert.assertEquals(2, evaluation.getFalseNegative(), 0.001);
 
         splitterAnswerChecker.initSplitterSheet(splitterSheetWrongCount5);
 
-        checkResult = splitterAnswerChecker.answerCheck();
+        evaluation = splitterAnswerChecker.answerCheck();
 
-        Assert.assertEquals(3, checkResult.getTruePositive(), 0.001);
-        Assert.assertEquals(0, checkResult.getTrueNegative(), 0.001);
-        Assert.assertEquals(22, checkResult.getFalsePositive(), 0.001);
-        Assert.assertEquals(0, checkResult.getFalseNegative(), 0.001);
+        Assert.assertEquals(3, evaluation.getTruePositive(), 0.001);
+        Assert.assertEquals(0, evaluation.getTrueNegative(), 0.001);
+        Assert.assertEquals(22, evaluation.getFalsePositive(), 0.001);
+        Assert.assertEquals(0, evaluation.getFalseNegative(), 0.001);
 
         splitterAnswerChecker.initSplitterSheet(splitterSheetWrongCount6);
-        checkResult = splitterAnswerChecker.answerCheck();
+        evaluation = splitterAnswerChecker.answerCheck();
 
-        Assert.assertEquals(0, checkResult.getTruePositive(), 0.001);
-        Assert.assertEquals(22, checkResult.getTrueNegative(), 0.001);
-        Assert.assertEquals(0, checkResult.getFalsePositive(), 0.001);
-        Assert.assertEquals(3, checkResult.getFalseNegative(), 0.001);
+        Assert.assertEquals(0, evaluation.getTruePositive(), 0.001);
+        Assert.assertEquals(22, evaluation.getTrueNegative(), 0.001);
+        Assert.assertEquals(0, evaluation.getFalsePositive(), 0.001);
+        Assert.assertEquals(3, evaluation.getFalseNegative(), 0.001);
 
     }
 
@@ -95,7 +95,7 @@ public class SplitterAnswerCheckerTest {
     public void testInvalidSplitterSheet() {
         boolean sameStringFlag = true;
         boolean notSameStringFlag = false;
-        SplitterAnswerChecker splitterAnswerChecker = new SplitterAnswerChecker("answer");
+        SplitterEvaluator splitterAnswerChecker = new SplitterEvaluator("answer");
 
         try {
             splitterAnswerChecker.initSplitterSheet(sameStringWithAnswerSheet);

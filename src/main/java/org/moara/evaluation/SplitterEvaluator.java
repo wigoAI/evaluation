@@ -1,4 +1,4 @@
-package org.wigo;
+package org.moara.evaluation;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SplitterAnswerChecker implements AnswerChecker {
+public class SplitterEvaluator implements Evaluator {
     private final String[] answerSheet;
     private final Integer[] answerSplitPoints;
     private final Integer[] answerNonSplitPoints;
@@ -17,7 +17,7 @@ public class SplitterAnswerChecker implements AnswerChecker {
 
     private List<String> splitterSheet;
 
-    public SplitterAnswerChecker(String fileName) {
+    public SplitterEvaluator(String fileName) {
         this.answerSheet = getSheetByFile(fileName)
                 .stream().map(sheet -> sheet.replace(" ", ""))
                 .toArray(String[]::new);
@@ -68,7 +68,7 @@ public class SplitterAnswerChecker implements AnswerChecker {
     }
 
     @Override
-    public CheckResult answerCheck() {
+    public Evaluation answerCheck() {
         List<Integer> answerSplitPoints = new ArrayList(Arrays.asList(this.answerSplitPoints));
         List<Integer> answerNonSplitPoints = new ArrayList(Arrays.asList(this.answerNonSplitPoints));
         List<Integer> splitterSplitPoints = getSplitPoints(splitterSheet);
@@ -89,7 +89,7 @@ public class SplitterAnswerChecker implements AnswerChecker {
         int falseNegative = falseNegativePoints.size();
         int falsePositive = falsePositivePoints.size();
 
-        return new CheckResult(truePositive, trueNegative, falseNegative, falsePositive);
+        return new Evaluation(truePositive, trueNegative, falseNegative, falsePositive);
     }
 
 
