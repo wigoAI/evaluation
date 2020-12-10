@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SplitterEvaluator implements Evaluator {
+public class SplitterEvaluator {
     private final String[] answerSheet;
     private final Integer[] answerSplitPoints;
     private final Integer[] answerNonSplitPoints;
@@ -18,6 +18,7 @@ public class SplitterEvaluator implements Evaluator {
     private List<String> splitterSheet;
 
     public SplitterEvaluator(String fileName) {
+
         this.answerSheet = getSheetByFile(fileName)
                 .stream().map(sheet -> sheet.replace(" ", ""))
                 .toArray(String[]::new);
@@ -67,7 +68,6 @@ public class SplitterEvaluator implements Evaluator {
         return answerStr.equals(sheetString.toString());
     }
 
-    @Override
     public Evaluation answerCheck() {
         List<Integer> answerSplitPoints = new ArrayList(Arrays.asList(this.answerSplitPoints));
         List<Integer> answerNonSplitPoints = new ArrayList(Arrays.asList(this.answerNonSplitPoints));

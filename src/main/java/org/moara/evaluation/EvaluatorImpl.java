@@ -1,30 +1,49 @@
 package org.moara.evaluation;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * TODO 1. 좀 더 간단하게 변경
+ *      2. 해당 평가자를 상속받게 하기
+ */
 public class EvaluatorImpl implements Evaluator {
 
-    private final int[] positives;
-    private final int[] negatives;
+    private final Integer[] positives;
+    private final Integer[] negatives;
 
-    private int[] sheets;
+    private Integer[] sheets;
     private boolean isInitSheets = false;
 
-    public EvaluatorImpl(int[] positives, int[] negatives) {
+    public EvaluatorImpl(Integer[] positives, Integer[] negatives) {
         this.positives = positives;
         this.negatives = negatives;
+    }
+
+    public EvaluatorImpl(int[] positives, int[] negatives) {
+
+        this.positives = new Integer[positives.length];
+        this.negatives = new Integer[negatives.length];
+
+        for (int i = 0; i < positives.length; i++) {
+            this.positives[i] = positives[i];
+        }
+        for (int i = 0; i < negatives.length; i++) {
+            this.negatives[i] = negatives[i];
+        }
 
     }
 
+    @Override
     public void initSheet(int[] sheets) {
-        this.sheets = sheets;
+        this.sheets = new Integer[sheets.length];
+
+        for (int i = 0; i < sheets.length; i++) {
+            this.sheets[i] = sheets[i];
+        }
         isInitSheets = true;
     }
 
@@ -37,7 +56,7 @@ public class EvaluatorImpl implements Evaluator {
         List<Integer> answerSplitPoints = new ArrayList(Arrays.asList(this.positives));
         List<Integer> answerNonSplitPoints = new ArrayList(Arrays.asList(this.negatives));
         List<Integer> splitterSplitPoints = new ArrayList(Arrays.asList(this.sheets));
-        List<Integer> splitterNonSplitPoints = IntStream.range(1, this.positives.length + this.negatives.length)
+        List<Integer> splitterNonSplitPoints = IntStream.range(0, this.positives.length + this.negatives.length + 1)
                 .filter(point -> !splitterSplitPoints.contains(point)).boxed().collect(Collectors.toList());
 
         List<Integer> truePositivePoints = answerSplitPoints.stream()
