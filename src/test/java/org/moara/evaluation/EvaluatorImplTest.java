@@ -19,5 +19,6 @@ public class EvaluatorImplTest {
         System.out.println(evaluation.getFalseNegative());
         System.out.println(evaluation.getTrueNegative());
         System.out.println(evaluation.getFalsePositive());
+        System.out.println(evaluation);
     }
 }

@@ -47,20 +47,18 @@ public class Evaluation {
 
     @Override
     public String toString() {
-        return "Evaluation{" +
-                "p=" + p +
-                ", f=" + N +
-                ", truePositive=" + truePositive +
-                ", trueNegative=" + trueNegative +
-                ", falseNegative=" + falseNegative +
-                ", falsePositive=" + falsePositive +
-                ", accuracy=" + accuracy +
-                ", errorRate=" + errorRate +
-                ", precision=" + precision +
-                ", recall=" + recall +
-                ", f1Score=" + f1Score +
-                ", geometricMean=" + geometricMean +
-                '}';
+        return  "Positive = " + p +
+                ", Negative = " + N +
+                ", True Positive = " + truePositive +
+                ", True Negative = " + trueNegative +
+                ", False Negative = " + falseNegative +
+                ", False Positive = " + falsePositive +
+                ", Accuracy = " + accuracy +
+//                ", ErrorRate=" + errorRate +
+                ", Precision = " + precision +
+                ", Recall = " + recall +
+                ", F1 Score = " + f1Score +
+                ", Geometric Mean = " + geometricMean;
     }
 
     public double getP() {

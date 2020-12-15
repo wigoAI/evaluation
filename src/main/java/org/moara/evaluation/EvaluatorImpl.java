@@ -23,6 +23,21 @@ public class EvaluatorImpl implements Evaluator {
         this.negatives = negatives;
     }
 
+    public EvaluatorImpl(int[] positives, int itemSize) {
+        this.positives = new Integer[positives.length];
+        this.negatives = new Integer[itemSize - positives.length];
+
+        int positiveIndex = 0;
+        int negativeIndex = 0;
+        for (int i = 0; i < itemSize; i++) {
+            if (positives[positiveIndex] == i) {
+                this.positives[positiveIndex++] = i;
+            } else {
+                this.negatives[negativeIndex++] = i;
+            }
+        }
+    }
+
     public EvaluatorImpl(int[] positives, int[] negatives) {
 
         this.positives = new Integer[positives.length];

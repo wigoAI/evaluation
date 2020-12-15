@@ -19,11 +19,10 @@ public class SplitterEvaluator {
 
     public SplitterEvaluator(String fileName) {
 
-        this.answerSheet = getSheetByFile(fileName)
-                .stream().map(sheet -> sheet.replace(" ", ""))
-                .toArray(String[]::new);
+        this.answerSheet = getSheetByFile(fileName).toArray(new String[0]);
 
-        List<Integer> answerSplitPoints =  getSplitPoints(Arrays.asList(answerSheet.clone()));
+
+        List<Integer> answerSplitPoints = getSplitPoints(Arrays.asList(answerSheet.clone()));
         Integer[] tmpAnswerSplitPoints = new Integer[answerSplitPoints.size()];
         for (int i = 0; i < tmpAnswerSplitPoints.length; i++) {
             tmpAnswerSplitPoints[i] = answerSplitPoints.get(i);
@@ -75,6 +74,7 @@ public class SplitterEvaluator {
         List<Integer> splitterNonSplitPoints = IntStream.range(1, answerStr.length())
                 .filter(point -> !splitterSplitPoints.contains(point)).boxed().collect(Collectors.toList());
 
+
         List<Integer> truePositivePoints = answerSplitPoints.stream()
                 .filter(splitterSplitPoints::contains).collect(Collectors.toList());
         List<Integer> trueNegativePoints = answerNonSplitPoints.stream()
@@ -98,7 +98,7 @@ public class SplitterEvaluator {
         List<Integer> sheetSplitPoints = new LinkedList<>();
 
         int previousSplitPoint = 0;
-        for (int i = 0; i < sheets.size() - 1 ; i++) {
+        for (int i = 0; i < sheets.size() - 1; i++) {
             previousSplitPoint += sheets.get(i).length();
             sheetSplitPoints.add(previousSplitPoint);
         }
@@ -115,17 +115,82 @@ public class SplitterEvaluator {
 
             while (true) {
                 String line = br.readLine();
-                if (line == null) { break; }
-                sheet.add(line);
+                if (line == null) {
+                    break;
+                }
+                sheet.add(line.replace(" ", ""));
             }
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return sheet;
     }
 
-    public String[] getAnswerSheet() { return answerSheet; }
-    public List<String> getSplitterSheet() { return splitterSheet; }
+    public String[] getAnswerSheet() {
+        return answerSheet;
+    }
+
+    public List<String> getSplitterSheet() {
+        return splitterSheet;
+    }
+
+
+    public static void main(String[] args) {
+
+        int count = 0;
+        double accuracy = 0.0;
+        double geometricMean = 0.0;
+        double recall = 0.0;
+        double precision = 0.0;
+        double f1Score = 0.0;
+
+        double truePositive = 0;
+        double trueNegative = 0;
+        double falseNegative = 0;
+        double falsePositive = 0;
+
+
+        for (int i = 0; i < 1000; i++) {
+            SplitterEvaluator splitterEvaluator = new SplitterEvaluator("answer/answer (" + (i + 1) + ")");
+            splitterEvaluator.initSplitterSheet("submit/submit (" + (i + 1) + ")");
+            Evaluation evaluation = splitterEvaluator.answerCheck();
+
+            if (evaluation.getP() == 0 && evaluation.getN() == 0) {
+                continue;
+            }
+
+            if (evaluation.getAccuracy() != 1.0) {
+                System.out.println("submit (" + (i + 1) + ") : " + evaluation.toString());
+            }
+
+            count++;
+            truePositive += evaluation.getTruePositive();
+            trueNegative += evaluation.getTrueNegative();
+            falseNegative += evaluation.getFalseNegative();
+            falsePositive += evaluation.getFalsePositive();
+
+            accuracy += evaluation.getAccuracy();
+            geometricMean += evaluation.getGeometricMean();
+            recall += evaluation.getRecall();
+            precision += evaluation.getPrecision();
+            f1Score += evaluation.getF1Score();
+
+        }
+
+
+        System.out.println("\nData count : " + count);
+
+        System.out.println("True Positive = " + truePositive);
+        System.out.println("True Negative = " + trueNegative);
+        System.out.println("False Negative = " + falseNegative);
+        System.out.println("False Positive = " + falsePositive);
+
+        System.out.println("Accuracy (정확도) \t\t: " + accuracy / count);
+        System.out.println("Geometric Mean (균형 정확도)\t: " + geometricMean / count);
+        System.out.println("Recall (재현율)\t\t\t: " + recall / count);
+        System.out.println("Precision (정밀도)\t\t: " + precision / count);
+        System.out.println("F1Score (F1 지수)\t\t: " + f1Score / count);
+    }
 }
