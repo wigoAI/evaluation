@@ -33,8 +33,10 @@
 - sensitivity : 재현율, 실제 정답 중 예측에 성공한 것 
   - 데이터 관점
   - 참인 정답이 적을 때 유효
-  - ![recall](expression/binary_classification/recall.gif)  
-  
+  - ![sensitivity](expression/binary_classification/sensitivity.gif)
+
+- specificity : it measures how much a classifier can recognize negative examples
+  - ![specificity](expression/binary_classification/specificity.gif)
 
 - F1-Score : Precision과 Recall의 조화평균, 
   - recall과 precision의 조화 평균
