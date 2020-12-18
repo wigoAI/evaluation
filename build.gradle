@@ -1,32 +1,14 @@
 plugins {
     id 'java'
-    id 'maven-publish'
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
+description = "model evaluation"
+
+
+allprojects {
+    group 'org.moara.evaluation'
+    repositories {
+        mavenCentral()
     }
 }
 
-dependencies {
-    implementation 'commons-io:commons-io:2.5'
-    testImplementation 'junit:junit:4.11'
-}
-
-group = 'org.moara'
-version = '1.0-SNAPSHOT'
-description = 'evaluation'
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}

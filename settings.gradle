@@ -3,3 +3,5 @@
  */
 
 rootProject.name = 'evaluation'
+
+include 'classification'
