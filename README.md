@@ -12,7 +12,7 @@
 - N : 전체 거짓인 수
 
 - TP (True Positive) : 참을 참이라고 한 횟수
-- TN (True Negative) : 거짓을 거짓이라고 한 횟수
+- TN (True Negative) : 거짓을 거짓이라고 한 횟수  
 - FN (False Negative) : 참을 거짓이라고 한 횟수  
 - FP (False Positive) : 거짓을 참이라고 한 횟수  
 
@@ -30,7 +30,7 @@
   - ![precision](expression/binary_classification/precision.gif)  
   
 
-- recall : 재현율, 실제 정답 중 예측에 성공한 것 
+- sensitivity : 재현율, 실제 정답 중 예측에 성공한 것 
   - 데이터 관점
   - 참인 정답이 적을 때 유효
   - ![recall](expression/binary_classification/recall.gif)  
