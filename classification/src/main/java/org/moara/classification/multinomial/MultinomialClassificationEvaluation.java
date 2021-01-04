@@ -8,13 +8,6 @@ import org.moara.classification.binary.BinaryClassificationEvaluation;
 public class MultinomialClassificationEvaluation {
 
     private final BinaryClassificationEvaluation[] binaryClassificationEvaluations;
-    private final int itemNum;
-
-    // 각 항목에 해당하는 값
-    private final double[] truePositive; // 참을 참이라고 한 횟수
-    private final double[] trueNegative; // 거짓을 거짓이라고 한 횟수
-    private final double[] falseNegative; // 참을 거짓이라고 한 횟수
-    private final double[] falsePositive; // 거짓을 참이라고 한 횟수
 
 
     private final double[] accuracies;
@@ -49,46 +42,48 @@ public class MultinomialClassificationEvaluation {
             throw new RuntimeException("Invalid confusion matrix");
         }
 
-        this.itemNum = confusionMatrix.length;
+        int itemNum = confusionMatrix.length;
 
-        this.binaryClassificationEvaluations = new BinaryClassificationEvaluation[this.itemNum];
-        this.truePositive = new double[this.itemNum]; // 참을 참이라고 한 횟수
-        this.trueNegative = new double[this.itemNum]; // 거짓을 거짓이라고 한 횟수
-        this.falseNegative = new double[this.itemNum]; // 참을 거짓이라고 한 횟수
-        this.falsePositive = new double[this.itemNum]; // 거짓을 참이라고 한 횟수
+
+
+        this.binaryClassificationEvaluations = new BinaryClassificationEvaluation[itemNum];
+        double[] truePositive = new double[itemNum]; // 참을 참이라고 한 횟수
+        double[] trueNegative = new double[itemNum]; // 거짓을 거짓이라고 한 횟수
+        double[] falseNegative = new double[itemNum]; // 참을 거짓이라고 한 횟수
+        double[] falsePositive = new double[itemNum]; // 거짓을 참이라고 한 횟수
 
         // 실제 값에 대한 모델의 분류를 순서대로
-        for (int i = 0; i < this.itemNum; i++) {
-            for (int j = 0; j < this.itemNum; j++) {
+        for (int i = 0; i < itemNum; i++) {
+            for (int j = 0; j < itemNum; j++) {
                 int value = confusionMatrix[i][j];
 
                 if (i == j) {
-                    this.truePositive[j] = value;
+                    truePositive[j] = value;
                 }
 
-                for (int k = 0; k < this.itemNum; k++) {
+                for (int k = 0; k < itemNum; k++) {
                     if (k != i && k != j) {
-                        this.trueNegative[k] += value;
+                        trueNegative[k] += value;
                     }
                     if (j == k && i != k) {
-                        this.falsePositive[k] += value;
+                        falsePositive[k] += value;
                     }
 
                     if (i == k && j != k) {
-                        this.falseNegative[k] += value;
+                        falseNegative[k] += value;
                     }
                 }
             }
         }
 
 
-        this.accuracies = new double[this.itemNum];
-        this.errorRates = new double[this.itemNum];
-        this.precisions = new double[this.itemNum];
-        this.specificities = new double[this.itemNum];
-        this.sensitivities = new double[this.itemNum];
-        this.f1Scores = new double[this.itemNum];
-        this.geometricMeans = new double[this.itemNum];
+        this.accuracies = new double[itemNum];
+        this.errorRates = new double[itemNum];
+        this.precisions = new double[itemNum];
+        this.specificities = new double[itemNum];
+        this.sensitivities = new double[itemNum];
+        this.f1Scores = new double[itemNum];
+        this.geometricMeans = new double[itemNum];
 
         double accuracy = 0;
         double errorRate = 0;
@@ -98,10 +93,10 @@ public class MultinomialClassificationEvaluation {
         double f1Score = 0;
         double geometricMean = 0;
 
-        for (int i = 0; i < this.itemNum; i++) {
+        for (int i = 0; i < itemNum; i++) {
             this.binaryClassificationEvaluations[i] = new BinaryClassificationEvaluation(
-                    this.truePositive[i], this.falsePositive[i],
-                    this.falseNegative[i], this.trueNegative[i]
+                    truePositive[i], falsePositive[i],
+                    falseNegative[i], trueNegative[i]
             );
 
             this.accuracies[i] = this.binaryClassificationEvaluations[i].getAccuracy();
@@ -111,20 +106,22 @@ public class MultinomialClassificationEvaluation {
             this.precisions[i] = this.binaryClassificationEvaluations[i].getPrecision();
             precision += this.precisions[i];
             this.sensitivities[i] = this.binaryClassificationEvaluations[i].getSensitivity();
-            specificity += this.sensitivities[i];
+            sensitivity += this.sensitivities[i];
+            this.specificities[i] = this.binaryClassificationEvaluations[i].getSpecificity();
+            specificity += this.specificities[i];
             this.f1Scores[i] = this.binaryClassificationEvaluations[i].getF1Score();
-            sensitivity += this.f1Scores[i];
+            f1Score += this.f1Scores[i];
             this.geometricMeans[i] = this.binaryClassificationEvaluations[i].getGeometricMean();
-            f1Score += this.geometricMeans[i];
+            geometricMean += this.geometricMeans[i];
         }
 
-        this.accuracy = accuracy / ((double) this.itemNum);
-        this.errorRate = errorRate / ((double) this.itemNum);
-        this.precision = precision / ((double) this.itemNum);
-        this.specificity = specificity / ((double) this.itemNum);
-        this.sensitivity = sensitivity / ((double) this.itemNum);
-        this.f1Score = f1Score / ((double) this.itemNum);
-        this.geometricMean = geometricMean / ((double) this.itemNum);
+        this.accuracy = accuracy / ((double) itemNum);
+        this.errorRate = errorRate / ((double) itemNum);
+        this.precision = precision / ((double) itemNum);
+        this.specificity = specificity / ((double) itemNum);
+        this.sensitivity = sensitivity / ((double) itemNum);
+        this.f1Score = f1Score / ((double) itemNum);
+        this.geometricMean = geometricMean / ((double) itemNum);
     }
 
     public BinaryClassificationEvaluation[] getBinaryClassificationEvaluations() {
