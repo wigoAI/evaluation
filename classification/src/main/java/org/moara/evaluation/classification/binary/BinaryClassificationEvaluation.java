@@ -1,4 +1,4 @@
-package org.moara.classification.binary;
+package org.moara.evaluation.classification.binary;
 
 /**
  * 이항 분류 모델 성능 평가
@@ -59,6 +59,17 @@ public class BinaryClassificationEvaluation {
         this(confusionMatrix[0][0], confusionMatrix[0][1], confusionMatrix[1][0] , confusionMatrix[1][1]);
     }
 
+    @Override
+    public String toString() {
+        return "BinaryClassificationEvaluation : " +
+                "accuracy=" + accuracy +
+                ", errorRate=" + errorRate +
+                ", precision=" + precision +
+                ", sensitivity=" + sensitivity +
+                ", specificity=" + specificity +
+                ", f1Score=" + f1Score +
+                ", geometricMean=" + geometricMean;
+    }
 
     public double getPrecision() {
         return precision;

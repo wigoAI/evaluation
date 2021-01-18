@@ -1,10 +1,11 @@
-package org.moara.classification;
+package org.moara.evaluation.classification;
+
 
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moara.classification.binary.BinaryClassificationEvaluation;
-import org.moara.classification.multinomial.MultinomialClassificationEvaluation;
+import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
+import org.moara.evaluation.classification.multinomial.MultinomialClassificationEvaluation;
 
 public class ClassificationTest {
 

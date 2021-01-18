@@ -1,6 +1,6 @@
-package org.moara.classification.multinomial;
+package org.moara.evaluation.classification.multinomial;
 
-import org.moara.classification.binary.BinaryClassificationEvaluation;
+import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
 
 /**
  * 다항 분류 평가
