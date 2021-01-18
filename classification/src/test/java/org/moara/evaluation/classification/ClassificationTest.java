@@ -2,8 +2,8 @@ package org.moara.evaluation.classification;
 
 
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
 import org.moara.evaluation.classification.multinomial.MultinomialClassificationEvaluation;
 
@@ -29,13 +29,13 @@ public class ClassificationTest {
         BinaryClassificationEvaluation evaluation2 = new BinaryClassificationEvaluation(binaryData[0][0], binaryData[0][1], binaryData[1][0], binaryData[1][1]);
 
 
-        Assert.assertEquals(evaluation1.getAccuracy(), evaluation2.getAccuracy(), 0.001);
-        Assert.assertEquals(evaluation1.getErrorRate(), evaluation2.getErrorRate(), 0.001);
-        Assert.assertEquals(evaluation1.getPrecision(), evaluation2.getPrecision(), 0.001);
-        Assert.assertEquals(evaluation1.getSensitivity(), evaluation2.getSensitivity(), 0.001);
-        Assert.assertEquals(evaluation1.getSpecificity(), evaluation2.getSpecificity(), 0.001);
-        Assert.assertEquals(evaluation1.getF1Score(), evaluation2.getF1Score(), 0.001);
-        Assert.assertEquals(evaluation1.getGeometricMean(), evaluation2.getGeometricMean(), 0.001);
+        Assertions.assertEquals(evaluation1.getAccuracy(), evaluation2.getAccuracy(), 0.001);
+        Assertions.assertEquals(evaluation1.getErrorRate(), evaluation2.getErrorRate(), 0.001);
+        Assertions.assertEquals(evaluation1.getPrecision(), evaluation2.getPrecision(), 0.001);
+        Assertions.assertEquals(evaluation1.getSensitivity(), evaluation2.getSensitivity(), 0.001);
+        Assertions.assertEquals(evaluation1.getSpecificity(), evaluation2.getSpecificity(), 0.001);
+        Assertions.assertEquals(evaluation1.getF1Score(), evaluation2.getF1Score(), 0.001);
+        Assertions.assertEquals(evaluation1.getGeometricMean(), evaluation2.getGeometricMean(), 0.001);
 
     }
 
@@ -59,15 +59,15 @@ public class ClassificationTest {
         System.out.println("Sensitivity " + multinomial.getSensitivity());
         System.out.println("F1 score " + multinomial.getF1Score());
 
-        Assert.assertEquals(binary.getAccuracy(), multinomial.getAccuracy(), 0.001);
-        Assert.assertEquals(binary.getErrorRate(), multinomial.getErrorRate(), 0.001);
+        Assertions.assertEquals(binary.getAccuracy(), multinomial.getAccuracy(), 0.001);
+        Assertions.assertEquals(binary.getErrorRate(), multinomial.getErrorRate(), 0.001);
 
-        Assert.assertEquals(binary.getPrecision(), multinomial.getPrecision(), 0.001);
-        Assert.assertEquals(binary.getSensitivity(), multinomial.getSensitivity(), 0.001);
-        Assert.assertEquals(binary.getSpecificity(), multinomial.getSpecificity(), 0.001);
+        Assertions.assertEquals(binary.getPrecision(), multinomial.getPrecision(), 0.001);
+        Assertions.assertEquals(binary.getSensitivity(), multinomial.getSensitivity(), 0.001);
+        Assertions.assertEquals(binary.getSpecificity(), multinomial.getSpecificity(), 0.001);
 
-        Assert.assertEquals(binary.getF1Score(), multinomial.getF1Score(), 0.001);
-        Assert.assertEquals(binary.getGeometricMean(), multinomial.getGeometricMean(), 0.001);
+        Assertions.assertEquals(binary.getF1Score(), multinomial.getF1Score(), 0.001);
+        Assertions.assertEquals(binary.getGeometricMean(), multinomial.getGeometricMean(), 0.001);
 
 
     }
